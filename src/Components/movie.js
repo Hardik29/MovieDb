@@ -30,10 +30,10 @@ export default class Movie extends Component {
         })
 
     }
-    handleSort = (path) =>{
-        //console.log(path)
-        this.setState({sortColumn:{ path, order:"asc"}})
-        console.log(this.state.sortColumn.path)
+    handleSort = (sortColumn) =>{
+        console.log(sortColumn)
+        this.setState({sortColumn})
+
     }
     handlePageChange = (pages) => {
         this.setState({ currentPage: pages })
@@ -44,7 +44,7 @@ export default class Movie extends Component {
 
     render() {
         const filtered = this.state.selectedGenre ? this.state.movies.filter(ch => ch.genre._id === this.state.selectedGenre._id) : this.state.movies
-        const sorted = _.orderBy(filtered, [this.state.sortColumn.path], ["asc"])
+        const sorted = _.orderBy(filtered, [this.state.sortColumn.path], [this.state.sortColumn.order])
         console.log(sorted)
         const moviesch = Paginate(sorted, this.state.currentPage, this.state.pageSize)
         return (
@@ -60,6 +60,7 @@ export default class Movie extends Component {
                 <div className="col-span-2">
                     we have total of { filtered.length } movies
                     <MOviesTable 
+                    sortColumn ={this.state.sortColumn}
                     moviesch={moviesch} 
                     handleDelete={this.handleDelete}
                     onSort={this.handleSort}/>
