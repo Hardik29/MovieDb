@@ -1,52 +1,59 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 import { getMovies, deleteMovie } from "../Services/fakeMovieService";
 import { getGenres } from "../Services/fakeGenreService";
-import PaginationComp from './PaginationComp';
-import Paginate from "../utlis/Paginate"
-import ListGroup from './ListGroup';
-import MOviesTable from './MoviesTable';
-import _ from 'lodash';
+import PaginationComp from "./PaginationComp";
+import Paginate from "../utlis/Paginate";
+import ListGroup from "./ListGroup";
+import MOviesTable from "./MoviesTable";
+import _ from "lodash";
 
 export default class Movie extends Component {
     constructor(props) {
-        super(props)
-
+        super(props);
         this.state = {
             movies: [],
             genre: [],
             pageSize: 4,
             currentPage: 1,
-            sortColumn: {path: "title", order:"asc"}
-        }
+            sortColumn: { path: "title", order: "asc" },
+        };
         this.handleSort = this.handleSort.bind(this);
     }
     componentDidMount() {
-        this.setState({ movies: getMovies(), genre: getGenres() })
+        this.setState({ movies: getMovies(), genre: getGenres() });
     }
     handleDelete = (movie) => {
-        let m = deleteMovie(movie._id)
+        let m = deleteMovie(movie._id);
         this.setState({
-            movies: m
-        })
-
-    }
-    handleSort = (sortColumn) =>{
-        console.log(sortColumn)
-        this.setState({sortColumn})
-
-    }
+            movies: m,
+        });
+    };
+    handleSort = (sortColumn) => {
+        this.setState({ sortColumn });
+    };
     handlePageChange = (pages) => {
-        this.setState({ currentPage: pages })
-    }
+        this.setState({ currentPage: pages });
+    };
     onItemSelect = (items) => {
-        this.setState({ selectedGenre: items, currentPage: 1 })
-    }
+        this.setState({ selectedGenre: items, currentPage: 1 });
+    };
 
     render() {
-        const filtered = this.state.selectedGenre ? this.state.movies.filter(ch => ch.genre._id === this.state.selectedGenre._id) : this.state.movies
-        const sorted = _.orderBy(filtered, [this.state.sortColumn.path], [this.state.sortColumn.order])
-        console.log(sorted)
-        const moviesch = Paginate(sorted, this.state.currentPage, this.state.pageSize)
+        const filtered = this.state.selectedGenre
+            ? this.state.movies.filter(
+                (ch) => ch.genre._id === this.state.selectedGenre._id
+            )
+            : this.state.movies;
+        const sorted = _.orderBy(
+            filtered,
+            [this.state.sortColumn.path],
+            [this.state.sortColumn.order]
+        );
+        const moviesch = Paginate(
+            sorted,
+            this.state.currentPage,
+            this.state.pageSize
+        );
         return (
             <div className="grid grid-cols-3">
                 <div className="">
@@ -58,16 +65,21 @@ export default class Movie extends Component {
                     />
                 </div>
                 <div className="col-span-2">
-                    we have total of { filtered.length } movies
-                    <MOviesTable 
-                    sortColumn ={this.state.sortColumn}
-                    moviesch={moviesch} 
-                    handleDelete={this.handleDelete}
-                    onSort={this.handleSort}/>
-                    <PaginationComp itemsCount={filtered.length} pageSize={this.state.pageSize} pageChange={this.handlePageChange} currentPage={this.state.currentPage} />
+                    we have total of {filtered.length} movies
+          <MOviesTable
+                        sortColumn={this.state.sortColumn}
+                        moviesch={moviesch}
+                        handleDelete={this.handleDelete}
+                        onSort={this.handleSort}
+                    />
+                    <PaginationComp
+                        itemsCount={filtered.length}
+                        pageSize={this.state.pageSize}
+                        pageChange={this.handlePageChange}
+                        currentPage={this.state.currentPage}
+                    />
                 </div>
-
             </div>
-        )
+        );
     }
 }
