@@ -66,7 +66,7 @@ export default class Movie extends Component {
                 </div>
                 <div className="col-span-2">
                     we have total of {filtered.length} movies
-          <MOviesTable
+                    <MOviesTable
                         sortColumn={this.state.sortColumn}
                         moviesch={moviesch}
                         handleDelete={this.handleDelete}
