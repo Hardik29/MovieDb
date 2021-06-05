@@ -16,6 +16,9 @@ function NavBar() {
         <li className="mr-6">
           <NavLink className="text-blue-500 hover:text-blue-800" to="/rentals">Rentals</NavLink>
         </li>
+        <li className="mr-6">
+          <NavLink className="text-blue-500 hover:text-blue-800" to="/login">Login</NavLink>
+        </li>
       </ul>
     )
 }
